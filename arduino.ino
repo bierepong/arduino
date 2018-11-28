@@ -20,6 +20,7 @@ void setup() {
 // the loop routine runs over and over again forever:
 void loop() {
   
+  // Turn on the led while we are collecting and sending data
   digitalWrite(led, HIGH);
 
   sensorValue[0] = analogRead(A0);
@@ -28,15 +29,21 @@ void loop() {
   sensorValue[3] = analogRead(A3);
   sensorValue[4] = analogRead(A4);
   sensorValue[5] = analogRead(A5);
-  
+
+  // Build RPC string to send over Serial link
   String rpc = pre;
   for(int i=0; i<6; i++) {
     rpc += sensorValue[i];
     if (i<5) rpc += ","; 
   }
   rpc += post;
-  
+
+  // Send value
   Serial.println(rpc);
-  delay(freq);
+  
+  // We are done, turn off led
   digitalWrite(led, LOW);
+  
+  // Wait a bit before next loop
+  delay(freq);
 }
